@@ -92,6 +92,3 @@ If using a Makefile:
 make docs
 ```
 
-## License
-
-MIT License – free to use and modify.
