@@ -20,6 +20,28 @@ def upload_video():
         messagebox.showinfo("File Selected", f"You selected:\n{filepath}")
         read_video(filepath, speed_factor = 20)
 
+
+
+
+from video_reader import read_video, scan_video 
+
+def scan_video_clicked():
+    filepath = filedialog.askopenfilename(
+        title="Select a video file",
+        filetypes=[("Video Files", "*.mp4 *.mov *.avi *.mkv"), ("All Files", "*.*")]
+    )
+    if filepath:
+        summary = scan_video(filepath, target_seconds=30)  # try to finish ~30s
+        msg = (
+            f"Scan complete.\n\n"
+            f"Frames analyzed: {summary['frames_analyzed']}\n"
+            f"Frame stride: {summary['frame_stride']}\n"
+            f"Ball detections: {summary['ball_count']}\n"
+            f"Rim detections: {summary['rim_count']}\n"
+            f"Elapsed: {summary['elapsed_sec']:.1f}s"
+        )
+        messagebox.showinfo("Scan Summary", msg)
+
 # Main window setup
 window = tk.Tk()
 window.title("Upload Basketball Video")
@@ -27,6 +49,7 @@ window.configure(bg = "#2e2e2e")
 
 # Set window size
 win_width = 600
+win_height = 300
 win_height = 300
 
 # Get screen dimensions
@@ -55,6 +78,19 @@ upload_btn = tk.Button(
     pady = 8
 )
 upload_btn.pack(pady = 100)
+
+
+# NEW: Fast Scan button
+scan_btn = tk.Button(
+    window,
+    text="Scan Fast (~30s)",
+    command=scan_video_clicked,
+    font=("Helvetica", 14, "bold"),
+    bg="#444444", fg="white",
+    activebackground="#555555", activeforeground="white",
+    relief="flat", padx=12, pady=8
+)
+scan_btn.pack(pady=10)
 
 # Run the GUI event loop
 window.mainloop()
